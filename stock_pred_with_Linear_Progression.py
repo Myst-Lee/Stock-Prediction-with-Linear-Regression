@@ -66,7 +66,6 @@ if sb=='Buy Stock':
     # st.write(dataframe.tail())
 
     dataframe = dataframe[["Close"]] #only require close for prediction
-    dataframe.Close.plot(figsize = (10, 5), color = "g")
     chart_data=pd.DataFrame(dataframe)
     # pyplot.ylabel(stockName+" Stock Value")
     # pyplot.title(stockName+" ("+stock_symbol+") - 2010 - "+d.strftime("%Y"))
