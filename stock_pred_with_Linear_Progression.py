@@ -264,8 +264,6 @@ elif sb =='Sell Stock':
     else:
         st.write("Stock not appear in Table, creating a new record")
         
-
-        presentable_data['Tickers']=stock_symbol
         presentable_data.insert(0, "Tickers", stock_symbol, True)
         presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
         
