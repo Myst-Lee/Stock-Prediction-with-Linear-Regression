@@ -268,21 +268,21 @@ elif sb =='Sell Stock':
 #         presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
         
 #         st.write(presentable_data.to_numpy())
-        filtered_df =pd.DataFrame([])
-        filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
-        filtered_df['Open'] = float(presentable_data['Open'])
-        filtered_df['High'] = float(presentable_data['High'])
-        filtered_df['Low'] = float(presentable_data['Low'])
-        filtered_df['Close'] = float(presentable_data['Close'])
-        filtered_df['Volume'] = int(presentable_data['Volume'])
+        filtered_df =pd.DataFrame(presentable_data)
+#         filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
+#         filtered_df['Open'] = float(presentable_data['Open'])
+#         filtered_df['High'] = float(presentable_data['High'])
+#         filtered_df['Low'] = float(presentable_data['Low'])
+#         filtered_df['Close'] = float(presentable_data['Close'])
+#         filtered_df['Volume'] = int(presentable_data['Volume'])
         
-        filtered_df['Share Bought'] = stock_bought
-        filtered_df['Current Share Price (Buy Price)'] = buy_Prc
-        filtered_df['Current Share Price (Sell Price)'] = sell_Prc
-        filtered_df['Total Investment'] = investment
-        filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
-        filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
-        filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
+#         filtered_df['Share Bought'] = stock_bought
+#         filtered_df['Current Share Price (Buy Price)'] = buy_Prc
+#         filtered_df['Current Share Price (Sell Price)'] = sell_Prc
+#         filtered_df['Total Investment'] = investment
+#         filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
+#         filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
+#         filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
         
         st.write(filtered_df)
 
