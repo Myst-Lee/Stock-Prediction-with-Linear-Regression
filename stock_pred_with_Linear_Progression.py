@@ -268,7 +268,7 @@ elif sb =='Sell Stock':
 #         presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
         
 #         st.write(presentable_data.to_numpy())
-        filtered_df =pd.DataFrame()
+        filtered_df =pd.DataFrame([])
         filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
         filtered_df['Open'] = float(presentable_data['Open'])
         filtered_df['High'] = float(presentable_data['High'])
