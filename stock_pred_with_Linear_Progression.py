@@ -273,7 +273,7 @@ elif sb =='Sell Stock':
         st.write("Strategy (Hold/Sell): ", strategy)
 
         template = pd.concat([template, presentable_data])
-        st.write(template)
+        st.dataframe(template)
 
     confirm = st.checkbox("View Template before download")
 
