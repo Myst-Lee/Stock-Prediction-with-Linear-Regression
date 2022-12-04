@@ -273,30 +273,10 @@ elif sb =='Sell Stock':
         st.write("Strategy (Hold/Sell): ", strategy)
 
         template = pd.concat([template, presentable_data])
+        st.write(template)
 
     confirm = st.checkbox("View Template before download")
 
     if confirm:
         st.write(template)
         st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
-
-
-
-    
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
