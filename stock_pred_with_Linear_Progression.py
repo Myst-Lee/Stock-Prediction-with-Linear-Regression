@@ -271,8 +271,7 @@ elif sb =='Sell Stock':
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.write("Strategy (Hold/Sell): ", strategy)
         
-        presentable_data = presentable_data.to_numpy()
-        st.write(presentable_data)
+        template.loc[len(template.index)] = presentable_data.to_numpy()
 #         template = pd.concat([template, presentable_data])
         st.write(template)
 
