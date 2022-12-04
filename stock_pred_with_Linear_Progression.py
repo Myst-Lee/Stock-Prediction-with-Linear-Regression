@@ -33,7 +33,7 @@ sb = sideb.selectbox(
      
 stock_symbol = sideb.text_input(
     "Enter Stock Symbol",
-    value="AMZN"
+    value="DIS"
 ).upper()
 
 # declare function
