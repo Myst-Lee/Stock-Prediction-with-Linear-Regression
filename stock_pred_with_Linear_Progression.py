@@ -265,7 +265,7 @@ elif sb =='Sell Stock':
         st.write("Stock not appear in Table, creating a new record")
         
         presentable_data.insert(0, "Tickers", stock_symbol, True)
-        presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
+#         presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
         
         st.write(presentable_data)
         strategy = presentable_data.iloc[0]['Sell/Hold']
