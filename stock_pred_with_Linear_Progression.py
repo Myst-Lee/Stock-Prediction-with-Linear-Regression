@@ -263,7 +263,7 @@ elif sb =='Sell Stock':
         
     else:
         st.write("Stock not appear in Table, creating a new record")
-        st.write(template)
+        
 
         # presentable_data['Tickers']=stock_symbol
         presentable_data.insert(0, "Tickers", stock_symbol, True)
@@ -272,6 +272,8 @@ elif sb =='Sell Stock':
         st.write(presentable_data)
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.write("Strategy (Hold/Sell): ", strategy)
+        
+        st.write(template)
 
         template = template.append(presentable_data)
 
