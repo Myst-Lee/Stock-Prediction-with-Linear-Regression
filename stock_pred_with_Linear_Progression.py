@@ -271,7 +271,7 @@ elif sb =='Sell Stock':
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.write("Strategy (Hold/Sell): ", strategy)
         
-        st.write(template)
+        st.write(template.append(presentable_data))
 
 #         template = template.append(presentable_data)
 
