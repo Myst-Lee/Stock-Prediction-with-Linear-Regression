@@ -256,7 +256,7 @@ elif sb =='Sell Stock':
         st.write(filtered_df)
 
         strategy = filtered_df.iloc[0]['Sell/Hold']
-        st.write("Strategy (Hold/Sell): ", strategy)
+        st.subheader("Strategy (Hold/Sell): "+ strategy)
 
         # Update original DataFrame
         template.loc[template['Tickers'] == stock_symbol] = filtered_df
@@ -274,7 +274,7 @@ elif sb =='Sell Stock':
 
 #         template.loc[len(template.index)] = presentable_data.to_numpy()
 #         template = pd.concat([template, presentable_data])
-#         template = pd.concat([template, filtered_df])
+        template = pd.concat([template, filtered_df])
         st.write(template)
 
 #         template = template.append(presentable_data)
