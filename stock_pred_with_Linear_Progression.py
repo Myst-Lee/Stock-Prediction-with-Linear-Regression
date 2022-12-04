@@ -1,16 +1,12 @@
 import yfinance as yf
 import datetime 
-from datetime import date, datetime, timedelta, time
-import matplotlib.pyplot as pyplot
+from datetime import date, datetime, timedelta
 import urllib.request
 import json
 from sklearn.linear_model import LinearRegression
 import pandas as pd
 import numpy as np
 import streamlit as st
-from csv import writer, DictWriter
-import sys
-import altair as alt
 
 # Show header
 st.title("Stock Prediction with Linear Regression")
