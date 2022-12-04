@@ -134,7 +134,7 @@ if sb=='Buy Stock':
     st.subheader("Buy or Hold/Sell Strategy")
     st.write(dataset.tail())
     strategy = dataset.iloc[-1]['strategy']
-    st.subheader("Strategy (Hold/Sell): ", strategy)
+    st.subheader("Strategy (Hold/Sell): "+ strategy)
 
 elif sb =='Sell Stock':
     stockName = get_yahoo_shortname(stock_symbol)
