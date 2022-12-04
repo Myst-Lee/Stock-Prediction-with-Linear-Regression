@@ -273,7 +273,7 @@ elif sb =='Sell Stock':
         
 #         template.loc[len(template.index)] = presentable_data.to_numpy()
 #         template = pd.concat([template, presentable_data])
-        st.write(template.loc[0])
+        st.write(template[0])
         st.write(template)
 
 #         template = template.append(presentable_data)
