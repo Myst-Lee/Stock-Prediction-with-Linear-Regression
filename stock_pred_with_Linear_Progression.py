@@ -51,23 +51,6 @@ def user_input_features():
     return features
 
 @st.cache()
-def display_stock_data():
-    presentable_data = pd.DataFrame()
-    day=[1, 2, 3, 4, 5, 6, 7]
-    for i in day:
-        ytd = date.today() - timedelta(days = day)
-        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
-        
-        if not presentable_data.empty():
-            break
-#     while presentable_data.empty:
-#         for i in day:
-#             ytd = date.today() - timedelta(days = day)
-#             presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
-
-    return presentable_data
-
-@st.cache()
 def pred_tmr():
     dataset = yf.download(stock_symbol, "2010-01-01", d, auto_adjust=True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
@@ -240,7 +223,24 @@ elif sb =='Sell Strategy':
         st.write("")
         st.write("")
         
-        # Download relevant stock detail        
+        # Download relevant stock detail       
+        @st.cache()
+        def display_stock_data():
+            presentable_data = pd.DataFrame()
+            day=[1, 2, 3, 4, 5, 6, 7]
+            for i in day:
+                ytd = date.today() - timedelta(days = day)
+                presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+                if not presentable_data.empty():
+                    break
+        #     while presentable_data.empty:
+        #         for i in day:
+        #             ytd = date.today() - timedelta(days = day)
+        #             presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+            return presentable_data
+    
         presentable_data = display_stock_data()
         
         st.write("Today's Stock Value: ")
@@ -366,6 +366,23 @@ elif sb =='Update Stock':
         if view:
             st.write(template)
         
+        @st.cache()
+        def display_stock_data():
+            presentable_data = pd.DataFrame()
+            day=[1, 2, 3, 4, 5, 6, 7]
+            for i in day:
+                ytd = date.today() - timedelta(days = day)
+                presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+                if not presentable_data.empty():
+                    break
+        #     while presentable_data.empty:
+        #         for i in day:
+        #             ytd = date.today() - timedelta(days = day)
+        #             presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+            return presentable_data
+        
         presentable_data = display_stock_data()
         
         st.write("Today's Stock Value: ")
@@ -457,6 +474,22 @@ elif sb =='Update Stock':
             st.write("Stock not appear in Table, creating a new record")               
 
             # Downlaod new record
+            @st.cache()
+            def display_stock_data():
+                presentable_data = pd.DataFrame()
+                day=[1, 2, 3, 4, 5, 6, 7]
+                for i in day:
+                    ytd = date.today() - timedelta(days = day)
+                    presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+                    if not presentable_data.empty():
+                        break
+            #     while presentable_data.empty:
+            #         for i in day:
+            #             ytd = date.today() - timedelta(days = day)
+            #             presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+
+                return presentable_data
             presentable_data = display_stock_data()
             
             presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
