@@ -67,7 +67,7 @@ def display_stock_data():
     day=1
     while presentable_data.empty and day <7:
         ytd = date.today() - timedelta(days = day)
-        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True, period=1d)
+        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True, interval='1d')
         day = day+1
 
         if day == 7:
@@ -86,7 +86,7 @@ if sb=='Buy Strategy':
     df = user_input_features()
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Buy Strategy - ("+stock_symbol+") "+stockName)
-    dataframe = yf.download(stock_symbol, start_date, d, auto_adjust=True, prepost = True)
+    dataframe = yf.download(stock_symbol, period = '22h', interval = '1d', auto_adjust=True, prepost = True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
     # st.write(dataframe.tail())
