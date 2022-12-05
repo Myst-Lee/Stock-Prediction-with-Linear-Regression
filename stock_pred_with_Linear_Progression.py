@@ -28,7 +28,7 @@ sideb = st.sidebar
 sideb.header("User Input Parameter")
 sb = sideb.selectbox(
     'Select a mini project',
-     ['Buy Strategy','Sell Strategy', 'Update Stock', 'test']
+     ['Buy Strategy','Sell Strategy', 'Update Stock']
      )
      
 stock_symbol = sideb.text_input(
@@ -465,17 +465,6 @@ elif sb =='Update Stock':
     else:
         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
         st.markdown(err_msg, unsafe_allow_html=True)
-else:
-    @st.cache
-    def expensive_computation(a, b):
-        time.sleep(2)  # This makes the function take 2s to run
-        return a * b
-
-    a = 2
-    b = 21
-    res = expensive_computation(a, b)
-
-    st.write("Result:", res)
     
 
 
