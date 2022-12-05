@@ -285,7 +285,7 @@ elif sb =='Update Stock':
 
     choice = sideb.radio("",
         ["Buy Stock", "Sell Stock"],
-        label_visibility=collapsed
+        label_visibility="collapsed"
     )
 
     if choice=="Buy Stock":
