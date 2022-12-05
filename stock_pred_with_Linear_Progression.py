@@ -369,7 +369,7 @@ elif sb =='Update Stock':
                 filtered_df['High'] = float(presentable_data['High'])
                 filtered_df['Low'] = float(presentable_data['Low'])
                 filtered_df['Volume'] = int(presentable_data['Volume'])
-            return filtered_df
+                return filtered_df
         
             filtered_df = update_df(presentable_data, template)
 
