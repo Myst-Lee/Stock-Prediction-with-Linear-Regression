@@ -276,9 +276,12 @@ elif sb =='Sell Strategy':
 elif sb =='Update Stock':
     st.header("Update Stock (Buy / Sell)")
 
-    stock_bought = float(sideb.text_input(
+    stock_bought = sideb.number_input(
         label = 'Enter Amount of Stock: ', 
-        value=0.00
+        min_value=0,
+        step = 1,
+        value=0
+        format = "%.1f"
     ))
 
     choice = sideb.radio("",
@@ -289,12 +292,18 @@ elif sb =='Update Stock':
     if choice=="Buy Stock":
         buy_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Buy Price): ",
+            min_value=0.0000,
+            step = 0.01,
             value=90.00,
+            format = "%.2f"
         )
     else:
         sell_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Sell Price): ",
+            min_value=0.0000,
+            step = 0.01,
             value=90.00,
+            format = "%.2f"
         )
 
     dl_template = st.checkbox("Download Sample Template")
