@@ -271,7 +271,6 @@ elif sb =='Sell Stock':
 
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.subheader("Strategy (Hold/Sell): "+ strategy
-                     
         template = template.append(presentable_data)
 
     confirm = st.checkbox("View Template before download")
