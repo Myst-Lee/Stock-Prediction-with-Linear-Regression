@@ -12,7 +12,7 @@ import streamlit as st
 st.title("Stock Prediction with Linear Regression")
 
 # Show readme
-readme = st.checkbox("readme first")amzn
+readme = st.checkbox("readme first")
 
 if readme:
 
