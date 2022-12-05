@@ -297,18 +297,18 @@ elif sb =='Update Stock':
     if choice=="Buy Stock":
         buy_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Buy Price): ",
-            min_value=0.0000,
+            min_value=0.00,
             step = 0.01,
             value=90.00,
-            format = "%.5f"
+            format = "%.2f"
         )
     else:
         sell_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Sell Price): ",
-            min_value=0.0000,
+            min_value=0.00,
             step = 0.01,
             value=90.00,
-            format = "%.5f"
+            format = "%.2f"
         )        
 
     dl_template = st.checkbox("Download Sample Template")
