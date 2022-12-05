@@ -280,8 +280,7 @@ elif sb =='Update Stock':
         label = 'Enter Amount of Stock: ', 
         min_value=0,
         step = 1,
-        value=0.0,
-        format = "%.1f"
+        value=0
     )
 
     choice = sideb.radio("",
@@ -295,7 +294,7 @@ elif sb =='Update Stock':
             min_value=0.0000,
             step = 0.01,
             value=90.00,
-            format = "%.2f"
+            format = "%.5f"
         )
     else:
         sell_Prc = sideb.number_input(
@@ -303,7 +302,7 @@ elif sb =='Update Stock':
             min_value=0.0000,
             step = 0.01,
             value=90.00,
-            format = "%.2f"
+            format = "%.5f"
         )
 
     dl_template = st.checkbox("Download Sample Template")
