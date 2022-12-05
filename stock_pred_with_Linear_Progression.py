@@ -304,7 +304,8 @@ elif sb =='Update Stock':
         label = 'Enter Amount of Stock: ', 
         min_value=0.0000,
         step = 0.001,
-        value=1.0000
+        value=1.0000,
+        format = "%.4f"
     )
 
     choice = sideb.radio("",
@@ -481,6 +482,8 @@ elif sb =='Update Stock':
                         presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
                         presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
 
+                        st.write("Template")
+                        st.write(template)
                         st.write("New Record")
                         st.write(presentable_data)
 
@@ -507,24 +510,3 @@ elif sb =='Update Stock':
         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
         st.markdown(err_msg, unsafe_allow_html=True)
     
-
-
-
-
-
-
-
-    
-
-
-    
-
-
-
-
-
-
-
-
-
-
