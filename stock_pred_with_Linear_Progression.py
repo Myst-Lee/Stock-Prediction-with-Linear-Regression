@@ -286,20 +286,19 @@ elif sb =='Update Stock':
         label_visibility="collapsed"
     )
 
+    @st.cache(suppress_st_warning=True)
     if choice=="Buy Stock":
-        buy_Prc = 0.00
-        while (buy_Prc > 0 or buy_Prc.replace(".", "", 1).isdigit()):
-            buy_Prc = float(sideb.text_input(
+        @st.cache(suppress_st_warning=True)
+        buy_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Buy Price): ",
             value=90.00,
-        ))
+        )
     else:
-        sell_Prc = 0.00
-        while (sell_Prc > 0 or sell_Prc.replace(".", "", 1).isdigit()):
-            sell_Prc = float(sideb.text_input(
+        @st.cache(suppress_st_warning=True)
+        sell_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Sell Price): ",
             value=90.00,
-        ))
+        )
 
     dl_template = st.checkbox("Download Sample Template")
 
