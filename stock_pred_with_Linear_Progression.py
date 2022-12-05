@@ -289,30 +289,21 @@ elif sb =='Update Stock':
     )
 
     if choice=="Buy Stock":
-        @st.cache() # Store the value everytime
-        def buy_prc_process():
-            buy_Prc = sideb.number_input(
-                label = "Enter Current Stock Price (Buy Price): ",
-                min_value=0.0000,
-                step = 0.01,
-                value=90.00,
-                format = "%.5f"
-            )
-            return buy_Prc
-        buy_Prc = buy_prc_process()
+        buy_Prc = sideb.number_input(
+            label = "Enter Current Stock Price (Buy Price): ",
+            min_value=0.0000,
+            step = 0.01,
+            value=90.00,
+            format = "%.5f"
+        )
     else:
-        @st.cache()
-        def sell_prc_process():
-            sell_Prc = sideb.number_input(
-                label = "Enter Current Stock Price (Sell Price): ",
-                min_value=0.0000,
-                step = 0.01,
-                value=90.00,
-                format = "%.5f"
-            )
-            return sell_Prc
-        sell_Prc = sell_prc_process()
-        
+        sell_Prc = sideb.number_input(
+            label = "Enter Current Stock Price (Sell Price): ",
+            min_value=0.0000,
+            step = 0.01,
+            value=90.00,
+            format = "%.5f"
+        )        
 
     dl_template = st.checkbox("Download Sample Template")
 
@@ -367,7 +358,8 @@ elif sb =='Update Stock':
         if((template['Tickers'] == stock_symbol).any()):
             st.write("Stock Appear in Table")
             st.write("Stock Bought: "+str(stock_bought))
-
+            
+            @st.cache
             def update_df(presentable_data, template):
                 filtered_df =[]
                 filtered_df = template.loc[template['Tickers'] == stock_symbol]
@@ -385,11 +377,12 @@ elif sb =='Update Stock':
             if choice=="Buy Stock":
                 st.write("Stock Buy Price: "+str(buy_Prc))
                 
-                def buy_stock(filtered_df, stock_bought, buy_Prc): 
-                    filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
+                filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
+                investment = stock_bought*buy_Prc
+                
+                @st.cache
+                def buy_stock(filtered_df, investment, buy_Prc): 
                     filtered_df['Current Share Price (Buy Price)'] = buy_Prc
-
-                    investment = stock_bought*buy_Prc
                     filtered_df['Total Investment'] = filtered_df['Total Investment'] + investment
                     filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
                     filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
@@ -409,19 +402,20 @@ elif sb =='Update Stock':
 
                 if (obtained_stock>stock_bought):
                     
-                    def sell_stock(filtered_df, stock_bought, sell_Prc, obtained_stock):
-                        filtered_df['Share Bought'] = obtained_stock - stock_bought
+                    filtered_df['Share Bought'] = obtained_stock - stock_bought
+                    investment = stock_bought*sell_Prc
+                    
+                    @st.cache()
+                    def sell_stock(filtered_df, investment, sell_Prc):
                         filtered_df['Current Share Price (Sell Price)'] = sell_Prc
-
                         filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
-                        investment = stock_bought*sell_Prc
                         filtered_df['Total Investment'] = filtered_df['Total Investment'] - investment
                         filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
                         filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
                         filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
                         return filtered_df
 
-                    filtered_df = sell_stock(filtered_df, stock_bought, sell_Prc, obtained_stock)
+                    filtered_df = sell_stock(filtered_df, investment, sell_Prc)
                     
                     st.write("Latest Data")
                     st.write(filtered_df)
