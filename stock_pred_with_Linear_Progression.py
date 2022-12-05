@@ -28,7 +28,7 @@ sideb = st.sidebar
 sideb.header("User Input Parameter")
 sb = sideb.selectbox(
     'Select a mini project',
-     ['Buy Strategy','Sell Strategy', 'Update Stock', 'test]
+     ['Buy Strategy','Sell Strategy', 'Update Stock', 'test']
      )
      
 stock_symbol = sideb.text_input(
@@ -287,13 +287,11 @@ elif sb =='Update Stock':
     )
 
     if choice=="Buy Stock":
-        @st.cache(suppress_st_warning=True)
         buy_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Buy Price): ",
             value=90.00,
         )
     else:
-        @st.cache(suppress_st_warning=True)
         sell_Prc = sideb.number_input(
             label = "Enter Current Stock Price (Sell Price): ",
             value=90.00,
