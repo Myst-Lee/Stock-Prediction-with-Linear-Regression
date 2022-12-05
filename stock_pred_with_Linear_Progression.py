@@ -7,6 +7,7 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 import numpy as np
 import streamlit as st
+from streamlit import caching
 
 # Show header
 st.title("Stock Prediction with Linear Regression")
@@ -60,7 +61,7 @@ def pred_tmr():
     dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
     return dataset
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True, max_entries = 2)
 def display_stock_data():
     presentable_data = pd.DataFrame()
     found = True
@@ -458,7 +459,9 @@ elif sb =='Update Stock':
             # if not appear in dataframe            
             else:
                 # Create new row
-                st.write("Stock not appear in Table, creating a new record")               
+                st.write("Stock not appear in Table, creating a new record")    
+                
+                @st.clearcache()
 
                 # Downlaod new record
                 presentable_data = []
