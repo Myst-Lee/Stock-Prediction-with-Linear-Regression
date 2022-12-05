@@ -286,7 +286,6 @@ elif sb =='Update Stock':
         label_visibility="collapsed"
     )
 
-    @st.cache(suppress_st_warning=True)
     if choice=="Buy Stock":
         @st.cache(suppress_st_warning=True)
         buy_Prc = sideb.number_input(
