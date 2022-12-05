@@ -297,7 +297,8 @@ elif sb =='Sell Strategy':
         st.markdown(err_msg, unsafe_allow_html=True)
 
 elif sb =='Update Stock':
-    st.header("Update Stock (Buy / Sell)")
+    stockName = get_yahoo_shortname(stock_symbol)
+    st.header("Update Stock ("+stock_symbol+") "+stockName+"(Buy / Sell)")
 
     stock_bought = sideb.number_input(
         label = 'Enter Amount of Stock: ', 
