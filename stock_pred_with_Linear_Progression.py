@@ -359,7 +359,6 @@ elif sb =='Update Stock':
             st.write("Stock Appear in Table")
             st.write("Stock Bought: "+str(stock_bought))
 
-            @st.cache() # Faster the loading process
             def update_df(presentable_data, template):
                 filtered_df =[]
                 filtered_df = template.loc[template['Tickers'] == stock_symbol]
@@ -377,7 +376,6 @@ elif sb =='Update Stock':
             if choice=="Buy Stock":
                 st.write("Stock Buy Price: "+str(buy_Prc))
                 
-                @st.cache()# Faster the loading process
                 def buy_stock(filtered_df, stock_bought, buy_Prc): 
                     filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
                     filtered_df['Current Share Price (Buy Price)'] = buy_Prc
@@ -402,7 +400,6 @@ elif sb =='Update Stock':
 
                 if (obtained_stock>stock_bought):
                     
-                    @st.cache()# Faster the loading process
                     def sell_stock(filtered_df, stock_bought, sell_Prc, obtained_stock):
                         filtered_df['Share Bought'] = obtained_stock - stock_bought
                         filtered_df['Current Share Price (Sell Price)'] = sell_Prc
