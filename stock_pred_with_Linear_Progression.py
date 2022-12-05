@@ -462,40 +462,44 @@ elif sb =='Update Stock':
                 # Downlaod new record
                 presentable_data, found= display_stock_data()
 
-                presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
+                if found:
+                    presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
 
-                # If user select Buy Stock
-                if choice=="Buy Stock":
-                    st.write("Stock Bought: "+str(stock_bought))
-                    st.write("Stock Buy Price: "+str(buy_Prc))
+                    # If user select Buy Stock
+                    if choice=="Buy Stock":
+                        st.write("Stock Bought: "+str(stock_bought))
+                        st.write("Stock Buy Price: "+str(buy_Prc))
 
-                    presentable_data.insert(0, "Tickers", stock_symbol, True)
-                    presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
-                    investment = stock_bought*buy_Prc
-                    presentable_data['Share Bought'] = stock_bought
-                    presentable_data['Current Share Price (Buy Price)'] = buy_Prc
-                    presentable_data['Current Share Price (Sell Price)'] = 0
-                    presentable_data['Total Investment'] = investment 
-                    presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
-                    presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
-                    presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
+                        presentable_data.insert(0, "Tickers", stock_symbol, True)
+                        presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
+                        investment = stock_bought*buy_Prc
+                        presentable_data['Share Bought'] = stock_bought
+                        presentable_data['Current Share Price (Buy Price)'] = buy_Prc
+                        presentable_data['Current Share Price (Sell Price)'] = 0
+                        presentable_data['Total Investment'] = investment 
+                        presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
+                        presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
+                        presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
 
-                    st.write("New Record")
-                    st.write(presentable_data)
+                        st.write("New Record")
+                        st.write(presentable_data)
 
-                    template = template.append(presentable_data)
+                        template = template.append(presentable_data)
 
-                    confirm = st.checkbox("View Template before download")
+                        confirm = st.checkbox("View Template before download")
 
-                    if confirm:
-                        st.write(template)
+                        if confirm:
+                            st.write(template)
 
-                    st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+                        st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
 
+                    else:
+                        err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
+                        st.markdown(err_msg, unsafe_allow_html=True)
+                       
                 else:
                     err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Amount of Stock): Empty Stock Amount!!</p>'
                     st.markdown(err_msg, unsafe_allow_html=True)
-    
         else:
             err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
             st.markdown(err_msg, unsafe_allow_html=True)
