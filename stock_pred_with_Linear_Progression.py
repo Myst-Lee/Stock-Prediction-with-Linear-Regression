@@ -482,8 +482,10 @@ elif sb =='Update Stock':
                         presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
                         presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
 
-                        st.write("New Record")
+                        st.write(template)
                         st.write(presentable_data)
+#                         st.write("New Record")
+#                         st.write(presentable_data)
 
                         template = template.append(presentable_data)
 
