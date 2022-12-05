@@ -464,7 +464,7 @@ elif sb =='Update Stock':
                 presentable_data = []
                 presentable_data, found= display_stock_data()
                 
-                if 'Date' not in df:
+                if 'Date' not in presentable_data:
                     presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
 
                 # If user select Buy Stock
