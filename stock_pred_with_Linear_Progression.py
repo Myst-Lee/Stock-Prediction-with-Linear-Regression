@@ -291,7 +291,7 @@ elif sb =='Update Stock':
         label = "Enter Current Stock Price (Buy Price): ",
         value=90.00,
         format = "%.2f"
-        )
+        ))
     else:
         sell_Prc = float(sideb.text_input(
         label = "Enter Current Stock Price (Sell Price): ",
