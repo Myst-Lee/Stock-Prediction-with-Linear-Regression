@@ -493,18 +493,18 @@ elif sb =='Update Stock':
                     else:
                         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
                         st.markdown(err_msg, unsafe_allow_html=True)
-                    
-                    confirm = st.checkbox("View Template before download")
-
-                        if confirm:
-                            st.write(template)
-
-                        st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
-
                        
                 else:
                     err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Amount of Stock): Empty Stock Amount!!</p>'
                     st.markdown(err_msg, unsafe_allow_html=True)
+                    
+                confirm = st.checkbox("View Template before download")
+
+                if confirm:
+                    st.write(template)
+
+                st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+
         else:
             err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
             st.markdown(err_msg, unsafe_allow_html=True)
