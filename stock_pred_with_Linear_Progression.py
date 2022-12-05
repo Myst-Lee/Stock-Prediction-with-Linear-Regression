@@ -12,7 +12,7 @@ import streamlit as st
 st.title("Stock Prediction with Linear Regression")
 
 # Show readme
-readme = st.checkbox("readme first")
+readme = st.checkbox("readme first")amzn
 
 if readme:
 
@@ -278,5 +278,5 @@ elif sb =='Sell Stock':
     confirm = st.checkbox("View Template before download")
 
     if confirm:
-#         st.write(template)
+        st.write(template)
         st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
