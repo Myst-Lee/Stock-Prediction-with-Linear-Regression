@@ -288,7 +288,7 @@ elif sb =='Update Stock':
 
     if choice=="Buy Stock":
         buy_Prc = 0.00
-        while (buy_Prc > 0 or buyPrc.replace(".", "", 1).isdigit()):
+        while (buy_Prc > 0 or buy_Prc.replace(".", "", 1).isdigit()):
             buy_Prc = float(sideb.text_input(
             label = "Enter Current Stock Price (Buy Price): ",
             value=90.00,
