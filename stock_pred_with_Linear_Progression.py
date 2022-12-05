@@ -60,7 +60,7 @@ def pred_tmr():
     dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
     return dataset
 
-@st.cache(allow_output_mutation=True, max_entries = 2)
+@st.cache(allow_output_mutation=True, max_entries = 0)
 def display_stock_data():
     presentable_data = pd.DataFrame()
     found = True
@@ -463,8 +463,9 @@ elif sb =='Update Stock':
                 # Downlaod new record
                 presentable_data = []
                 presentable_data, found= display_stock_data()
-
-                presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
+                
+                if 'Date' not in df:
+                    presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
 
                 # If user select Buy Stock
                 if choice=="Buy Stock":
