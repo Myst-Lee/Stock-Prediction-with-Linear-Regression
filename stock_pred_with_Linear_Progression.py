@@ -280,7 +280,7 @@ elif sb =='Update Stock':
         label = 'Enter Amount of Stock: ', 
         min_value=0,
         step = 1,
-        value=0
+        value=0.0,
         format = "%.1f"
     ))
 
