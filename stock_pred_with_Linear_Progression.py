@@ -461,8 +461,6 @@ elif sb =='Update Stock':
                 # Create new row
                 st.write("Stock not appear in Table, creating a new record")    
                 
-                @st.clearcache()
-
                 # Downlaod new record
                 presentable_data = []
                 presentable_data, found= display_stock_data()
