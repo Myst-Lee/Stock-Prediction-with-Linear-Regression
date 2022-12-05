@@ -37,7 +37,7 @@ stock_symbol = sideb.text_input(
 ).upper()
 
 # declare function
-@st.cache
+@st.cache()
 def get_yahoo_shortname(symbol):
     response = urllib.request.urlopen(f'https://query2.finance.yahoo.com/v1/finance/search?q={symbol}')
     content = response.read()
@@ -60,7 +60,7 @@ def pred_tmr():
     dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
     return dataset
 
-@st.cache(allow_output_mutation=True, suppress_st_warning=True)
+@st.cache(allow_output_mutation=True)
 def display_stock_data():
     presentable_data = pd.DataFrame()
     found = True
@@ -482,8 +482,6 @@ elif sb =='Update Stock':
                         presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
                         presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
 
-                        st.write("Template")
-                        st.write(template)
                         st.write("New Record")
                         st.write(presentable_data)
 
