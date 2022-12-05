@@ -60,7 +60,7 @@ def pred_tmr():
     dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
     return dataset
 
-# @st.cache(allow_output_mutation=False, suppress_st_warning=True)
+@st.cache()
 def display_stock_data():
     presentable_data = pd.DataFrame()
     found = True
