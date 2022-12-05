@@ -60,10 +60,6 @@ def pred_tmr():
     dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
     return dataset
 
-def dis_err_msg():
-    err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
-    st.markdown(err_msg, unsafe_allow_html=True)
-
 @st.cache()
 def display_stock_data():
     presentable_data = pd.DataFrame()
@@ -75,7 +71,6 @@ def display_stock_data():
         day = day+1
 
         if day == 7:
-            dis_err_msg()
             found = False
 
     return presentable_data, found
@@ -294,6 +289,9 @@ elif sb =='Sell Strategy':
             else:
                 err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Not Appear): Please Proceed to "Update Stock" to Buy Stock!!</p>'
                 st.markdown(err_msg, unsafe_allow_html=True)
+        else:
+            err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
+            st.markdown(err_msg, unsafe_allow_html=True)
 
     else:
         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
@@ -498,7 +496,9 @@ elif sb =='Update Stock':
                     err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Amount of Stock): Empty Stock Amount!!</p>'
                     st.markdown(err_msg, unsafe_allow_html=True)
     
-        
+        else:
+            err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Unavilable): Business Terminated!!</p>'
+            st.markdown(err_msg, unsafe_allow_html=True)
     else:
         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
         st.markdown(err_msg, unsafe_allow_html=True)
