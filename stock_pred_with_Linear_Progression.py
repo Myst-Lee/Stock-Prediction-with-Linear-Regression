@@ -414,7 +414,6 @@ elif sb =='Update Stock':
 
             # Update into original table
             template.loc[template['Tickers'] == stock_symbol] = filtered_df
-            return template
 
             confirm = st.checkbox("View Template before download")
 
