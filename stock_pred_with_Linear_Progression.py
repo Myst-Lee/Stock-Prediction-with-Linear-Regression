@@ -79,7 +79,7 @@ if sb=='Buy Strategy':
     d = sideb.date_input(
         "Select Predicted Date:", value = date.today())
 
-    start_date = date("2010-01-01")
+    start_date = "2010-01-01"
     df = user_input_features()
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Buy Strategy - ("+stock_symbol+") "+stockName)
