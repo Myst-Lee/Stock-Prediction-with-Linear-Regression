@@ -488,7 +488,7 @@ elif sb =='Update Stock':
 #                         st.write("New Record")
 #                         st.write(presentable_data)
 
-                        template = template.append(presentable_data)
+                        template = pd.concat([template, presentable_data], axis=0)
 
                         confirm = st.checkbox("View Template before download")
 
