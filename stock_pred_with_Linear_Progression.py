@@ -282,7 +282,7 @@ elif sb =='Update Stock':
         step = 1,
         value=0.0,
         format = "%.1f"
-    ))
+    )
 
     choice = sideb.radio("",
         ["Buy Stock", "Sell Stock"],
