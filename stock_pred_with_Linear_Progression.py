@@ -271,16 +271,12 @@ elif sb =='Sell Stock':
 
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.subheader("Strategy (Hold/Sell): "+ strategy)
-
-#         template.loc[len(template.index)] = presentable_data.to_numpy()
-#         template = pd.concat([template, presentable_data])
-        template = pd.concat([template, filtered_df])
-        st.write(template)
+        template = template.append(presentable_data)
 
 #         template = template.append(presentable_data)
 
     confirm = st.checkbox("View Template before download")
 
     if confirm:
-        st.write(template)
+#         st.write(template)
         st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
