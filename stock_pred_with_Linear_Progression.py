@@ -28,12 +28,12 @@ sideb = st.sidebar
 sideb.header("User Input Parameter")
 sb = sideb.selectbox(
     'Select a mini project',
-     ['Buy Stock','Sell Stock']
+     ['Buy Strategy','Sell Strategy', 'Update Stock']
      )
      
 stock_symbol = sideb.text_input(
     "Enter Stock Symbol",
-    value="DIS"
+    value="AMZN"
 ).upper()
 
 # declare function
@@ -52,7 +52,7 @@ def user_input_features():
 
 # actual system
 
-if sb=='Buy Stock':
+if sb=='Buy Strategy':
     
     d = sideb.date_input(
         "Select Predicted Date:", value = date.today())
@@ -134,148 +134,363 @@ if sb=='Buy Stock':
     st.subheader("Buy or Hold/Sell Strategy")
     st.write(dataset.tail())
     strategy = dataset.iloc[-1]['strategy']
-    st.subheader("Strategy (Hold/Sell): "+ strategy)
 
-elif sb =='Sell Stock':
+    if strategy == "Buy":
+        st.subheader("Strategy (Buy or Hold/Sell): ")
+        msg = '<p style="font-family:sans-serif; color:Green; font-size: 18px;"><strong>Buy</strong></p>'
+        st.markdown(msg, unsafe_allow_html=True)
+    else:
+        st.subheader("Strategy (Buy or Hold/Sell): ")
+        msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;"><strong>Hold/Sell</strong></p>'
+        st.markdown(msg, unsafe_allow_html=True)
+    
+
+elif sb =='Sell Strategy':
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Sell Strategy - ("+stock_symbol+") "+stockName)
 
+    # stock_bought = sideb.number_input(
+    #     label = 'Enter Amount of Stock Bought: ', 
+    #     min_value=0,
+    #     step = 1,
+    #     value=0
+    # )
+
+    # buy_Prc = sideb.number_input(
+    #     label = "Enter Current Stock Price (Buy Price): ",
+    #     min_value=0.0000,
+    #     step = 0.01,
+    #     value=90.00,
+    #     format = "%.5f"
+    # )
+
+    # sell_Prc = sideb.number_input(
+    #     label = "Enter Current Stock Price (Sell Price): ",
+    #     min_value=0.0000,
+    #     step = 0.01,
+    #     value=100.00,
+    #     format = "%.5f"
+    # )
+
+    dl_template = st.checkbox("Download Sample Template")
+
+    if dl_template:
+        st.subheader("Sample Template")
+        st.write("You may download the template and make amendments. Uplaod the file to see its updates")
+        # Download sample csv
+        template = {'Tickers': ['AMZN', 'AAPL', 'NFLX', 'GOOGL', 'MSFT'],
+                    'Date': ['04/12/2022', '04/12/2022','04/12/2022', '04/12/2022', '04/12/2022'],
+                    'Open': [94.47, 145.96, 310.49, 99.05, 249.82],
+                    'High': [95.36, 148.00, 321.98, 100.77, 256.05],
+                    'Low': [93.78, 145.65, 310.00, 98.90, 249.75],
+                    'Close': [94.13, 147.81, 320.41, 98.90, 249.75],
+                    'Volume': [72096414, 62231328, 12690602, 21480703, 21332290],
+                    'Share Bought': [5.00, 2.00, 11.00, 1.00, 1.00],
+                    'Current Share Price (Buy Price)': [100.00, 150.00, 350.00, 50.00, 200.00],
+                    'Current Share Price (Sell Price)': [80.00, 100.00, 250.00, 200.00, 300.00],
+                    'Total Investment': [500.00, 300.00, 3850.00, 50.00, 500.00],
+                    'Equity': [470.65, 295.62, 3524.51, 98.90, 249.75],
+                    'Return': [-29.35, -4.38, -325.49, 48.90, 49.75]
+        }
+
+        template = pd.DataFrame(template)
+        st.write(template)
+
+        st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+
+    uploaded_file = st.file_uploader("Upload the template:")
+
+    if uploaded_file is not None:
+        # Convert csv to dataframe
+        template = pd.read_csv(uploaded_file, index_col=False)
+        st.write("Convert csv to DataFrame")
+        template.drop(columns=template.columns[0], axis=1, inplace=True)
+        view = st.checkbox("View Uploaded Data")
+
+        if view:
+            st.write(template)
+            
+        st.write("")
+        st.write("")
+        
+        # Download relevant stock detail
+        presentable_data = pd.DataFrame()
+        day=1
+        while presentable_data.empty:
+            ytd = date.today() - timedelta(days = day)
+            presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+            day = day+1
+        
+        st.write("Today's Stock Value: ")
+        st.write(presentable_data)
+
+        # Check if stock appear in DataFrame
+        if((template['Tickers'] == stock_symbol).any()):
+            st.write("Stock Appear in Table")
+
+            filtered_df =[]
+            filtered_df = template.loc[template['Tickers'] == stock_symbol]
+
+            # st.write("Old Stock Detail")
+            # st.write(filtered_df)
+
+            # st.write("Latest Stock Detail")
+            # st.write(presentable_data)
+
+            # Update old record
+            filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
+            filtered_df['Open'] = float(presentable_data['Open'])
+            filtered_df['Close'] = float(presentable_data['Close'])
+            filtered_df['High'] = float(presentable_data['High'])
+            filtered_df['Low'] = float(presentable_data['Low'])
+            filtered_df['Volume'] = int(presentable_data['Volume'])
+
+            # filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
+            # filtered_df['Current Share Price (Buy Price)'] = buy_Prc
+            # filtered_df['Current Share Price (Sell Price)'] = sell_Prc
+            # filtered_df['Total Investment'] = filtered_df['Total Investment'] + investment
+            filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
+            filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
+            filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
+
+            st.write(filtered_df)
+
+            strategy = filtered_df.iloc[0]['Sell/Hold']
+
+            if strategy == "Sell":
+                st.subheader("Strategy (Sell or Hold): ")
+                msg = '<p style="font-family:sans-serif; color:Green; font-size: 18px;"><strong>Sell</strong></p>'
+                st.markdown(msg, unsafe_allow_html=True)
+            else:
+                st.subheader("Strategy (Sell or Hold): ")
+                msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;"><strong>Hold</strong></p>'
+                st.markdown(msg, unsafe_allow_html=True)
+
+            # Update original DataFrame
+            template.loc[template['Tickers'] == stock_symbol] = filtered_df
+            
+        else:
+            err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Stock Not Appear): Please Proceed to "Update Stock" to Buy Stock!!</p>'
+            st.markdown(err_msg, unsafe_allow_html=True)
+
+    else:
+        err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
+        st.markdown(err_msg, unsafe_allow_html=True)
+
+elif sb =='Update Stock':
+    st.header("Update Stock (Buy / Sell)")
+
     stock_bought = sideb.number_input(
-        label = 'Enter Amount of Stock Bought (USD): ', 
+        label = 'Enter Amount of Stock: ', 
         min_value=0,
         step = 1,
-        value=10
+        value=0
     )
 
-    buy_Prc = sideb.number_input(
+    choice = sideb.radio("",
+        ["Buy Stock", "Sell Stock"]
+    )
+
+    if choice=="Buy Stock":
+        buy_Prc = sideb.number_input(
         label = "Enter Current Stock Price (Buy Price): ",
         min_value=0.0000,
         step = 0.01,
         value=90.00,
         format = "%.5f"
-    )
-
-    sell_Prc = sideb.number_input(
+        )
+    else:
+        sell_Prc = sideb.number_input(
         label = "Enter Current Stock Price (Sell Price): ",
         min_value=0.0000,
         step = 0.01,
-        value=100.00,
+        value=90.00,
         format = "%.5f"
-    )
+        )
 
-    st.subheader("Sample Template")
-    st.write("You may download the template and make amendments. Uplaod the file to see its updates")
-    # Download sample csv
-    template = {'Tickers': ['AMZN', 'AAPL', 'NFLX', 'GOOGL', 'MSFT'],
-                'Date': ['04/12/2022', '04/12/2022','04/12/2022', '04/12/2022', '04/12/2022'],
-                'Open': [94.47, 145.96, 310.49, 99.05, 249.82],
-                'High': [95.36, 148.00, 321.98, 100.77, 256.05],
-                'Low': [93.78, 145.65, 310.00, 98.90, 249.75],
-                'Close': [94.13, 147.81, 320.41, 98.90, 249.75],
-                'Volume': [72096414, 62231328, 12690602, 21480703, 21332290],
-                'Share Bought': [5.00, 2.00, 11.00, 1.00, 1.00],
-                'Current Share Price (Buy Price)': [100.00, 150.00, 350.00, 50.00, 200.00],
-                'Current Share Price (Sell Price)': [80.00, 100.00, 250.00, 200.00, 300.00],
-                'Total Investment': [500.00, 300.00, 3850.00, 50.00, 500.00],
-                'Equity': [470.65, 295.62, 3524.51, 98.90, 249.75],
-                'Return': [-29.35, -4.38, -325.49, 48.90, 49.75]
-    }
+    dl_template = st.checkbox("Download Sample Template")
 
-    template = pd.DataFrame(template)
-    st.write(template)
+    if dl_template:
+        st.subheader("Sample Template")
+        st.write("You may download the template and make amendments. Uplaod the file to see its updates")
+        # Download sample csv
+        template = {'Tickers': ['AMZN', 'AAPL', 'NFLX', 'GOOGL', 'MSFT'],
+                    'Date': ['04/12/2022', '04/12/2022','04/12/2022', '04/12/2022', '04/12/2022'],
+                    'Open': [94.47, 145.96, 310.49, 99.05, 249.82],
+                    'High': [95.36, 148.00, 321.98, 100.77, 256.05],
+                    'Low': [93.78, 145.65, 310.00, 98.90, 249.75],
+                    'Close': [94.13, 147.81, 320.41, 98.90, 249.75],
+                    'Volume': [72096414, 62231328, 12690602, 21480703, 21332290],
+                    'Share Bought': [5.00, 2.00, 11.00, 1.00, 1.00],
+                    'Current Share Price (Buy Price)': [100.00, 150.00, 350.00, 50.00, 200.00],
+                    'Current Share Price (Sell Price)': [80.00, 100.00, 250.00, 200.00, 300.00],
+                    'Total Investment': [500.00, 300.00, 3850.00, 50.00, 500.00],
+                    'Equity': [470.65, 295.62, 3524.51, 98.90, 249.75],
+                    'Return': [-29.35, -4.38, -325.49, 48.90, 49.75]
+        }
 
-    st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+        template = pd.DataFrame(template)
+        st.write(template)
 
-    # Another option for user to upload csv dataset
-    upload = st.checkbox("Try Own Dataset")
+        st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
 
-    if upload:
-        st.write("Upload the csv file that you had made amendment to train.")
-        uploaded_file = st.file_uploader("Select the template:")
+    uploaded_file = st.file_uploader("Upload the template:")
 
-        if uploaded_file is not None:
-            # Convert csv to dataframe
-            template = pd.read_csv(uploaded_file)
-            st.write("Convert csv to DataFrame")
+    if uploaded_file is not None:
+        # Convert csv to dataframe
+        template = pd.read_csv(uploaded_file)
+        st.write("Upload Successful")
+        template.drop(columns=template.columns[0], axis=1, inplace=True)
+
+        view = st.checkbox("View Uploaded Data")
+
+        if view:
             st.write(template)
 
-    st.write("")
-    st.write("")
+        presentable_data = pd.DataFrame()
+        day=1
+        while presentable_data.empty:
+            ytd = date.today() - timedelta(days = day)
+            presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+            day = day+1
+        
+        st.write("Today's Stock Value: ")
+        st.write(presentable_data)
+
+        # Check if stock appear in DataFrame
+        if((template['Tickers'] == stock_symbol).any()):
+            st.write("Stock Appear in Table")
+            st.write("Stock Bought: "+str(stock_bought))
+
+            filtered_df =[]
+            filtered_df = template.loc[template['Tickers'] == stock_symbol]
+            filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
+            filtered_df['Open'] = float(presentable_data['Open'])
+            filtered_df['Close'] = float(presentable_data['Close'])
+            filtered_df['High'] = float(presentable_data['High'])
+            filtered_df['Low'] = float(presentable_data['Low'])
+            filtered_df['Volume'] = int(presentable_data['Volume'])
+
+            # If user select Buy Stock
+            if choice=="Buy Stock":
+                st.write("Stock Buy Price: "+str(buy_Prc))
+                filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
+                filtered_df['Current Share Price (Buy Price)'] = buy_Prc
+
+                investment = stock_bought*buy_Prc
+                filtered_df['Total Investment'] = filtered_df['Total Investment'] + investment
+                filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
+                filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
+                filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
+
+                st.write("Latest Data")
+                st.write(filtered_df)
+
+            # if user wants to sell
+            else:
+                st.write("Stock Sell Price: "+str(sell_Prc))
+
+                obtained_stock = filtered_df.iloc[0]['Share Bought']
+
+                if (obtained_stock>stock_bought):
+                    filtered_df['Share Bought'] = obtained_stock - stock_bought
+                    filtered_df['Current Share Price (Sell Price)'] = sell_Prc
+
+                    filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
+                    investment = stock_bought*sell_Prc
+                    filtered_df['Total Investment'] = filtered_df['Total Investment'] - investment
+                    filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
+                    filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
+                    filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
+
+                    st.write("Latest Data")
+                    st.write(filtered_df)
+
+                else:
+                    err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Amount of Stock): Cannot Sell Stock more than Original Amount!!</p>'
+                    st.markdown(err_msg, unsafe_allow_html=True)
+
+            # Update into original table
+            template.loc[template['Tickers'] == stock_symbol] = filtered_df
+
+            confirm = st.checkbox("View Template before download")
+
+            if confirm:
+                st.write(template)
+            
+            st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+
+        # if not appear in dataframe            
+        else:
+            # Create new row
+            st.write("Stock not appear in Table, creating a new record")               
+
+            # Downlaod new record
+            presentable_data = pd.DataFrame()
+            day=1
+            while presentable_data.empty:
+                ytd = date.today() - timedelta(days = day)
+                presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+                day = day+1
+            
+            presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
+
+            # If user select Buy Stock
+            if choice=="Buy Stock":
+                st.write("Stock Bought: "+str(stock_bought))
+                st.write("Stock Buy Price: "+str(buy_Prc))
+
+                presentable_data.insert(0, "Tickers", stock_symbol, True)
+                presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
+                investment = stock_bought*buy_Prc
+                presentable_data['Share Bought'] = stock_bought
+                presentable_data['Current Share Price (Buy Price)'] = buy_Prc
+                presentable_data['Current Share Price (Sell Price)'] = 0
+                presentable_data['Total Investment'] = investment 
+                presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
+                presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
+                presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
+
+                st.write("New Record")
+                st.write(presentable_data)
+
+                template = template.append(presentable_data)
+
+                confirm = st.checkbox("View Template before download")
+
+                if confirm:
+                    st.write(template)
+                
+                st.download_button(label='Download as CSV', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+
+            else:
+                err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (Amount of Stock): Empty Stock Amount!!</p>'
+                st.markdown(err_msg, unsafe_allow_html=True)
     
-    # Download relevant stock detail
-    presentable_data = pd.DataFrame()
-    day=1
-    while presentable_data.empty:
-        ytd = date.today() - timedelta(days = day)
-        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
-        day = day+1
-
-    investment = stock_bought*buy_Prc
-    presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
-    presentable_data['Share Bought'] = stock_bought
-    presentable_data['Current Share Price (Buy Price)'] = buy_Prc
-    presentable_data['Current Share Price (Sell Price)'] = sell_Prc
-    presentable_data['Total Investment'] = investment 
-    presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
-    presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
-    presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
-
-    presentable_data['Share Bought'] = presentable_data['Share Bought'].map('{:,.4f}'.format)
-    presentable_data['Current Share Price (Buy Price)'] = presentable_data['Current Share Price (Buy Price)'].map('{:,.2f}'.format)
-    presentable_data['Current Share Price (Sell Price)'] = presentable_data['Current Share Price (Sell Price)'].map('{:,.2f}'.format)
-
-    # Check if stock appear in DataFrame
-    if((template['Tickers'] == stock_symbol).any()):
-        st.write("Stock Appear in Table")
-
-        filtered_df =[]
-        filtered_df = template.loc[template['Tickers'] == stock_symbol]
-
-        # st.write("Old Stock Detail")
-        # st.write(filtered_df)
-
-        # st.write("Latest Stock Detail")
-        # st.write(presentable_data)
-
-        # Update old record
-        filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
-        filtered_df['Open'] = float(presentable_data['Open'])
-        filtered_df['High'] = float(presentable_data['High'])
-        filtered_df['Low'] = float(presentable_data['Low'])
-        filtered_df['Close'] = float(presentable_data['Close'])
-        filtered_df['Volume'] = int(presentable_data['Volume'])
-
-        filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
-        filtered_df['Current Share Price (Buy Price)'] = buy_Prc
-        filtered_df['Current Share Price (Sell Price)'] = sell_Prc
-        filtered_df['Total Investment'] = filtered_df['Total Investment'] + investment
-        filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
-        filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
-        filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
-
-        st.write(filtered_df)
-
-        strategy = filtered_df.iloc[0]['Sell/Hold']
-        st.subheader("Strategy (Hold/Sell): "+ strategy)
-
-        # Update original DataFrame
-        template.loc[template['Tickers'] == stock_symbol] = filtered_df
         
     else:
-        st.write("Stock not appear in Table, creating a new record")
-        
-        presentable_data.insert(0, "Tickers", stock_symbol, True)
-        presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
-        
-        st.dataframe(presentable_data)
+        err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
+        st.markdown(err_msg, unsafe_allow_html=True)
 
-        strategy = presentable_data.iloc[0]['Sell/Hold']
-        st.subheader("Strategy (Hold/Sell): "+ strategy)
-                    
-        template = template.append(presentable_data)
+    
 
-    confirm = st.checkbox("View Template before download")
 
-    if confirm:
-        st.write(template)
-        st.download_button(label='Download', data=template.to_csv(), file_name='Stock Prediction Template.csv')
+
+
+
+
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
