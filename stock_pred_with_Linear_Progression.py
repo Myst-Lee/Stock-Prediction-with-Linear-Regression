@@ -490,11 +490,8 @@ elif sb =='Update Stock':
                     
                     presentable_data = buy_stock2(presentable_data, stock_symbol,stock_bought, buy_Prc)
                     
-                    
-                    st.write(template)
-                    st.write(presentable_data)
-#                         st.write("New Record")
-#                         st.write(presentable_data)
+                        st.write("New Record")
+                        st.write(presentable_data)
 
                     template = pd.concat([template, presentable_data], axis=0)
     
