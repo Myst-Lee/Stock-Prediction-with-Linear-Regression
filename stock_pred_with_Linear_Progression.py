@@ -289,21 +289,30 @@ elif sb =='Update Stock':
     )
 
     if choice=="Buy Stock":
-        buy_Prc = sideb.number_input(
-            label = "Enter Current Stock Price (Buy Price): ",
-            min_value=0.0000,
-            step = 0.01,
-            value=90.00,
-            format = "%.5f"
-        )
+        @st.cache() # Store the value everytime
+        def buy_prc_process():
+            buy_Prc = sideb.number_input(
+                label = "Enter Current Stock Price (Buy Price): ",
+                min_value=0.0000,
+                step = 0.01,
+                value=90.00,
+                format = "%.5f"
+            )
+            return buy_Prc
+        buy_Prc = buy_prc_process()
     else:
-        sell_Prc = sideb.number_input(
-            label = "Enter Current Stock Price (Sell Price): ",
-            min_value=0.0000,
-            step = 0.01,
-            value=90.00,
-            format = "%.5f"
-        )
+        @st.cache()
+        def sell_prc_process():
+            sell_Prc = sideb.number_input(
+                label = "Enter Current Stock Price (Sell Price): ",
+                min_value=0.0000,
+                step = 0.01,
+                value=90.00,
+                format = "%.5f"
+            )
+            return sell_Prc
+        sell_Prc = sell_prc_process()
+        
 
     dl_template = st.checkbox("Download Sample Template")
 
