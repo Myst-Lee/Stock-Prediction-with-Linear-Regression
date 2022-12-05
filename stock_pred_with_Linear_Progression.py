@@ -301,9 +301,9 @@ elif sb =='Update Stock':
 
     stock_bought = sideb.number_input(
         label = 'Enter Amount of Stock: ', 
-        min_value=0,
-        step = 1,
-        value=0
+        min_value=0.0000,
+        step = 0.001,
+        value=1.0000
     )
 
     choice = sideb.radio("",
@@ -459,7 +459,7 @@ elif sb =='Update Stock':
                 st.write("Stock not appear in Table, creating a new record")               
 
                 # Downlaod new record
-#                 presentable_data = display_stock_data()
+                presentable_data, found= display_stock_data()
 
                 presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
 
