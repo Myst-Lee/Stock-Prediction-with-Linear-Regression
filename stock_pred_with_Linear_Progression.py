@@ -53,11 +53,17 @@ def user_input_features():
 @st.cache()
 def display_stock_data():
     presentable_data = pd.DataFrame()
-    day=1
-    while presentable_data.empty:
+    day=[1, 2, 3, 4, 5, 6, 7]
+    for i in day:
         ytd = date.today() - timedelta(days = day)
         presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
-        day = day+1
+        
+        if not presentable_data.empty():
+            break
+#     while presentable_data.empty:
+#         for i in day:
+#             ytd = date.today() - timedelta(days = day)
+#             presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
 
     return presentable_data
 
