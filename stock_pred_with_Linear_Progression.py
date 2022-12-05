@@ -7,7 +7,6 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 import numpy as np
 import streamlit as st
-from streamlit import caching
 
 # Show header
 st.title("Stock Prediction with Linear Regression")
