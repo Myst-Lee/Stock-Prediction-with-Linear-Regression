@@ -271,7 +271,10 @@ elif sb =='Sell Stock':
 
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.subheader("Strategy (Hold/Sell): "+ strategy)
-        template = template.append(presentable_data)
+        test = np.DataFrame(st.secrets.dataframe)
+        test = template.append(presentable_data)
+        st.write(test)
+        
 
 #         template = template.append(presentable_data)
 
