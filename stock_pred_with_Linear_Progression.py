@@ -452,12 +452,18 @@ elif sb =='Update Stock':
             st.write("Stock not appear in Table, creating a new record")               
 
             # Downlaod new record
-            presentable_data = pd.DataFrame()
-            day=1
-            while presentable_data.empty:
-                ytd = date.today() - timedelta(days = day)
-                presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
-                day = day+1
+            @st.cache()
+            def display_stock_data():
+                presentable_data = pd.DataFrame()
+                day=1
+                while presentable_data.empty:
+                    ytd = date.today() - timedelta(days = day)
+                    presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
+                    day = day+1
+
+                return presentable_data
+        
+            presentable_data = display_stock_data()
             
             presentable_data.insert(0, "Date", datetime.today().strftime("%d/%m/%Y"), True)
 
