@@ -409,7 +409,7 @@ elif sb =='Update Stock':
                         filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
 
                         return filtered_df
-                    filtered_df = buy_stock(filtered_df, stock_bought, buy_Prc)
+                    filtered_df = buy_stock(filtered_df, investment, buy_Prc)
 
                     st.write("Latest Data")
                     st.write(filtered_df)
@@ -470,18 +470,26 @@ elif sb =='Update Stock':
                 if choice=="Buy Stock":
                     st.write("Stock Bought: "+str(stock_bought))
                     st.write("Stock Buy Price: "+str(buy_Prc))
+                    
+                    
+                    @st.cache
+                    def buy_stock2(presentable_data, stock_symbol,stock_bought, buy_Prc): 
+                        investment = stock_bought*buy_Prc
+                        presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
+                        presentable_data.insert(0, "Tickers", stock_symbol, True)
+                        presentable_data['Share Bought'] = stock_bought 
+                        presentable_data['Current Share Price (Buy Price)'] = buy_Prc
+                        presentable_data['Current Share Price (Sell Price)'] = 0
+                        presentable_data['Total Investment'] = investment 
+                        presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
+                        presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
+                        presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
 
-                    presentable_data.insert(0, "Tickers", stock_symbol, True)
-                    presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
-                    investment = stock_bought*buy_Prc
-                    presentable_data['Share Bought'] = stock_bought
-                    presentable_data['Current Share Price (Buy Price)'] = buy_Prc
-                    presentable_data['Current Share Price (Sell Price)'] = 0
-                    presentable_data['Total Investment'] = investment 
-                    presentable_data['Equity'] = presentable_data["Open"]*presentable_data["Share Bought"] # How many equity we have in that company
-                    presentable_data['Return'] = presentable_data["Equity"]-presentable_data["Total Investment"] # Earn/Loss from today market
-                    presentable_data['Sell/Hold'] = np.where((presentable_data['Open'] >= presentable_data['Current Share Price (Sell Price)']), "Sell", "Hold")
-
+                        return presentable_data
+                    
+                    presentable_data = buy_stock2(presentable_data, stock_symbol,stock_bought, buy_Prc)
+                    
+                    
                     st.write(template)
                     st.write(presentable_data)
 #                         st.write("New Record")
