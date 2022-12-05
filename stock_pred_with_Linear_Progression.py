@@ -359,7 +359,7 @@ elif sb =='Update Stock':
             st.write("Stock Appear in Table")
             st.write("Stock Bought: "+str(stock_bought))
 
-            @st.cache(allow_output_mutation=True)
+            @st.cache(allow_output_mutation=True, suppress_st_warning=True)
             def update_df(df):
                 filtered_df =[]
                 filtered_df = template.loc[template['Tickers'] == stock_symbol]
