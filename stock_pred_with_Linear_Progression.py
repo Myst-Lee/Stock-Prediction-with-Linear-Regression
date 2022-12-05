@@ -67,7 +67,7 @@ def display_stock_data():
     day=1
     while presentable_data.empty and day <7:
         ytd = date.today() - timedelta(days = day)
-        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True, interval='1d')
+        presentable_data = yf.download(stock_symbol, ytd, date.today(), auto_adjust=True)
         day = day+1
 
         if day == 7:
