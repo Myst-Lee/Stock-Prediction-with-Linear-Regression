@@ -267,7 +267,7 @@ elif sb =='Sell Stock':
         presentable_data.insert(0, "Tickers", stock_symbol, True)
         presentable_data = presentable_data.rename(index={presentable_data.index[0]:len(template)})
         
-        st.write(presentable_data)
+        st.dataframe(presentable_data)
 
         strategy = presentable_data.iloc[0]['Sell/Hold']
         st.subheader("Strategy (Hold/Sell): "+ strategy)
