@@ -461,6 +461,7 @@ elif sb =='Update Stock':
                 st.write("Stock not appear in Table, creating a new record")               
 
                 # Downlaod new record
+                presentable_data = []
                 presentable_data, found= display_stock_data()
 
                 if found:
