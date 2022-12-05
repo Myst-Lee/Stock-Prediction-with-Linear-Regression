@@ -61,6 +61,16 @@ def display_stock_data():
 
     return presentable_data
 
+@st.cache()
+def pred_tmr():
+    dataset = yf.download(stock_symbol, "2010-01-01", d, auto_adjust=True)
+    dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
+    dataset["twenty_days_avg"] = dataset["Close"].rolling(window=20).mean()
+    dataset = dataset.dropna()
+    dataset["predicted_stock_value"] = model.predict(dataset[["five_days_avg", "twenty_days_avg"]])
+    dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
+    return dataset
+
 
 # actual system
 
@@ -136,13 +146,8 @@ if sb=='Buy Strategy':
         st.subheader("Cumulative Product of adding Strategy Returns")
         st.line_chart(cumulative_product)
 
-    # Make Prediction to buy or sell
-    dataset = yf.download(stock_symbol, "2010-01-01", d, auto_adjust=True)
-    dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
-    dataset["twenty_days_avg"] = dataset["Close"].rolling(window=20).mean()
-    dataset = dataset.dropna()
-    dataset["predicted_stock_value"] = model.predict(dataset[["five_days_avg", "twenty_days_avg"]])
-    dataset["strategy"] = np.where(dataset.predicted_stock_value.shift(1) < dataset.predicted_stock_value, "Buy", "Hold/Sell")
+    # Make Prediction to buy or sell        
+    dataset = pred_tmr()
     st.subheader("Buy or Hold/Sell Strategy")
     st.write(dataset.tail())
     strategy = dataset.iloc[-1]['strategy']
