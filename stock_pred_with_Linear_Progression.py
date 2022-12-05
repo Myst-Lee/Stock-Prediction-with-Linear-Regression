@@ -113,12 +113,17 @@ if sb=='Buy Strategy':
     y_test = y[split_index:]
 
     # Prepare for Linear Regression
-    model = LinearRegression()
-    model = model.fit(X_train, y_train)
+    @st.cache()
+    def train_model(X_train, y_train):
+        model = LinearRegression()
+        model = model.fit(X_train, y_train)
+        return model
+    
+    model = train_model(X_train, y_train)
     five_day_moving_avg = model.coef_[0]
     twenty_day_moving_avg = model.coef_[1]
     constant = model.intercept_
-
+        
     # Make Predictions on tomorrow
     test_output = model.predict(X_test)
     y_test = y[(split_index - 1):]
