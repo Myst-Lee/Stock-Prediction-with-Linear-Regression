@@ -79,10 +79,13 @@ if sb=='Buy Strategy':
     d = sideb.date_input(
         "Select Predicted Date:", value = date.today())
 
+    start_date = date("2010-01-01")
     df = user_input_features()
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Buy Strategy - ("+stock_symbol+") "+stockName)
-    dataframe = yf.download(stock_symbol, "2010-01-01", d, auto_adjust=True)
+    hist = stock_symbol.history(period="max")
+    st.write(hist)
+    dataframe = yf.download(stock_symbol, start_date, d, auto_adjust=True, prepost = True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
     # st.write(dataframe.tail())
@@ -91,7 +94,7 @@ if sb=='Buy Strategy':
     chart_data=pd.DataFrame(dataframe)
     # pyplot.ylabel(stockName+" Stock Value")
     # pyplot.title(stockName+" ("+stock_symbol+") - 2010 - "+d.strftime("%Y"))
-    st.subheader(stockName+" ("+stock_symbol+") - 2010 - "+d.strftime("%Y"))
+    st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y") "- "+d.strftime("%Y"))
     st.line_chart(chart_data)
 
     # Define variable
