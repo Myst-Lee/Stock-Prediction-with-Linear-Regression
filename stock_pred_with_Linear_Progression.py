@@ -461,8 +461,9 @@ elif sb =='Update Stock':
         err_msg = '<p style="font-family:sans-serif; color:Red; font-size: 18px;">!!Error (File Type): Empty File!!</p>'
         st.markdown(err_msg, unsafe_allow_html=True)
 else:
+    @st.cache
     def expensive_computation(a, b):
-    time.sleep(2)  # This makes the function take 2s to run
+        time.sleep(2)  # This makes the function take 2s to run
     return a * b
 
     a = 2
