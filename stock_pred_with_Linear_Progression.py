@@ -235,7 +235,6 @@ elif sb =='Sell Strategy':
             st.write(template)
             
         st.write("")
-        st.write("")
         
         # Download relevant stock detail    
         presentable_data, found = display_stock_data()
