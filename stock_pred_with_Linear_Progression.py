@@ -94,7 +94,7 @@ if sb=='Buy Strategy':
     chart_data=pd.DataFrame(dataframe)
     # pyplot.ylabel(stockName+" Stock Value")
     # pyplot.title(stockName+" ("+stock_symbol+") - 2010 - "+d.strftime("%Y"))
-    st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y") "- "+d.strftime("%Y"))
+    st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
 
     # Define variable
