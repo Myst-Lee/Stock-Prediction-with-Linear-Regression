@@ -245,10 +245,6 @@ elif sb =='Sell Strategy':
             filtered_df['Low'] = float(presentable_data['Low'])
             filtered_df['Volume'] = int(presentable_data['Volume'])
 
-            # filtered_df['Share Bought'] = float(filtered_df['Share Bought']) + stock_bought
-            # filtered_df['Current Share Price (Buy Price)'] = buy_Prc
-            # filtered_df['Current Share Price (Sell Price)'] = sell_Prc
-            # filtered_df['Total Investment'] = filtered_df['Total Investment'] + investment
             filtered_df['Equity'] = filtered_df["Open"]*filtered_df["Share Bought"] # How many equity we have in that company
             filtered_df['Return'] = filtered_df["Equity"]-filtered_df["Total Investment"] # Earn/Loss from today market
             filtered_df['Sell/Hold'] = np.where((filtered_df['Open'] >= filtered_df['Current Share Price (Sell Price)']), "Sell", "Hold")
@@ -289,7 +285,7 @@ elif sb =='Update Stock':
 
     choice = sideb.radio("",
         ["Buy Stock", "Sell Stock"],
-        label_visibility=True
+        label_visibility=collapsed
     )
 
     if choice=="Buy Stock":
