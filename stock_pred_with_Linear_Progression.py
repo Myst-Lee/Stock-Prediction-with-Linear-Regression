@@ -45,6 +45,7 @@ def get_yahoo_shortname(symbol):
     data = json.loads(content.decode('utf8'))['quotes'][0]['shortname']
     return data
 
+@st.cache()
 def user_input_features():
     data = {'Stock_Symbol': stock_symbol,
             'Date': d}
@@ -52,8 +53,15 @@ def user_input_features():
     return features
 
 @st.cache()
+def display_chart(stock_symbol):
+    ticker = yf.Ticker(stock_symbol)
+    df = ticker.history(period="max")
+    st.line_chart(df['Close'].plot(title=(stock_symbol+" stock price"))
+
+
+@st.cache()
 def pred_tmr():
-    dataset = yf.download(stock_symbol, period = "max", auto_adjust=True)
+    dataset = yf.download(stock_symbol, period = "max", prepost = True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
     dataset["twenty_days_avg"] = dataset["Close"].rolling(window=20).mean()
     dataset = dataset.dropna()
@@ -96,6 +104,8 @@ if sb=='Buy Strategy':
     chart_data=pd.DataFrame(dataframe)
 #     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
+    display_chart(stock_symbol)
+    
     
     # Define variable
     dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
