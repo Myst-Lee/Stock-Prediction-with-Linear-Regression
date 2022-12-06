@@ -56,8 +56,7 @@ def user_input_features():
 def display_chart(stock_symbol):
     ticker = yf.Ticker(stock_symbol)
     df = ticker.history(period="max")
-    st.line_chart(df['Close'].plot(title=(stock_symbol+" stock price"))
-
+    st.line_chart(df['Close'].plot(title=(stock_symbol+" stock price")))
 
 @st.cache()
 def pred_tmr():
