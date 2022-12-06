@@ -97,18 +97,13 @@ if sb=='Buy Strategy':
 #     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
     
-    temp_df = pd.DataFrame([])
-    
-    st.write(dataframe.tail())
     # Define variable
     dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
     dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
     dataframe = dataframe.dropna()
     X = dataframe[["five_days_moving_avg", "twenty_days_moving_avg"]]
-    temp_df["value_next_day"] = dataframe["Close"].shift(-1).bfill()
-    temp_df.loc[len(temp_df.index)] = [""]
-    dataframe["value_next_day"]=temp_df["value_next_day"]
-    dataframe = dataframe.dropna()
+    dataframe["value_next_day"] = dataframe["Close"].shift(-1).fillna(0)    
+#     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
     
     st.write(dataframe.tail())
