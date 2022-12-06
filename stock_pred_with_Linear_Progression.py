@@ -97,7 +97,7 @@ if sb=='Buy Strategy':
 #     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
     
-    temp_df = np.DataFrame([])
+    temp_df = pd.DataFrame([])
     
     st.write(dataframe.tail())
     # Define variable
