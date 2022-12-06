@@ -53,12 +53,6 @@ def user_input_features():
     return features
 
 @st.cache()
-def display_chart(stock_symbol):
-    ticker = yf.Ticker(stock_symbol)
-    df = ticker.history(period="max")
-    st.line_chart(df['Close'].plot(title=(stock_symbol+" stock price")))
-
-@st.cache()
 def pred_tmr():
     dataset = yf.download(stock_symbol, period = "max", prepost = True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
@@ -97,14 +91,10 @@ if sb=='Buy Strategy':
     dataframe = yf.download(stock_symbol, start_date, d, auto_adjust=True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
-#     st.write(dataframe.tail())
 
     dataframe = dataframe[["Close"]] #only require close for prediction
     chart_data=pd.DataFrame(dataframe)
-#     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
-    st.line_chart(chart_data)
-    display_chart(stock_symbol)
-    
+    st.line_chart(chart_data)    
     
     # Define variable
     dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
@@ -184,29 +174,6 @@ elif sb =='Sell Strategy':
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Sell Strategy - ("+stock_symbol+") "+stockName)
 
-    # stock_bought = sideb.number_input(
-    #     label = 'Enter Amount of Stock Bought: ', 
-    #     min_value=0,
-    #     step = 1,
-    #     value=0
-    # )
-
-    # buy_Prc = sideb.number_input(
-    #     label = "Enter Current Stock Price (Buy Price): ",
-    #     min_value=0.0000,
-    #     step = 0.01,
-    #     value=90.00,
-    #     format = "%.5f"
-    # )
-
-    # sell_Prc = sideb.number_input(
-    #     label = "Enter Current Stock Price (Sell Price): ",
-    #     min_value=0.0000,
-    #     step = 0.01,
-    #     value=100.00,
-    #     format = "%.5f"
-    # )
-
     dl_template = st.checkbox("Download Sample Template")
 
     if dl_template:
@@ -266,7 +233,7 @@ elif sb =='Sell Strategy':
                 # st.write(filtered_df)
 
                 # st.write("Latest Stock Detail")
-                # st.write(presentable_data)
+                # st.write(presentable_data) 
 
                 # Update old record
                 filtered_df['Date'] = datetime.today().strftime("%d/%m/%Y")
