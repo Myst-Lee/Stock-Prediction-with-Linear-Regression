@@ -106,8 +106,8 @@ if sb=='Buy Strategy':
     dataframe = dataframe.dropna()
     X = dataframe[["five_days_moving_avg", "twenty_days_moving_avg"]]
     temp_df["value_next_day"] = dataframe["Close"].shift(-1).bfill()
-    temp_df.loc[len(temp_df.index)] = [""] 
-    temp_df.rename(index={temp_df.index[-1]:len(template)-1})
+    temp_df.loc[len(temp_df.index)] = [""]
+    dataframe["value_next_day"]=temp_df["value_next_day"]
     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
     
