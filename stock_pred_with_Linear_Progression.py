@@ -102,11 +102,11 @@ if sb=='Buy Strategy':
     dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
     dataframe = dataframe.dropna()
     X = dataframe[["five_days_moving_avg", "twenty_days_moving_avg"]]
-    dataframe["value_next_day"] = dataframe["Close"].shift(-1)
+    dataframe["value_next_day"] = dataframe["Close"].shift(-1).bfill()
     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
     
-    st.write(y.tail())
+    st.write(dataframe.tail())
 
     # Train test split
     split_index = 0.8 # Split data into 80:20
