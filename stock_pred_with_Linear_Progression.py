@@ -106,7 +106,7 @@ if sb=='Buy Strategy':
 #     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
     
-    st.write(dataframe.tail())
+    st.write(y.tail())
 
     # Train test split
     split_index = 0.8 # Split data into 80:20
