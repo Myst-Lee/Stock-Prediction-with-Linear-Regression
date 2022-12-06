@@ -97,6 +97,7 @@ if sb=='Buy Strategy':
 #     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
     
+    st.write(dataframe.tail())
     # Define variable
     dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
     dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
