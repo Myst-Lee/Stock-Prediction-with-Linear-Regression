@@ -88,7 +88,7 @@ if sb=='Buy Strategy':
     df = user_input_features()
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Buy Strategy - ("+stock_symbol+") "+stockName)
-    dataframe = yf.download(stock_symbol, period = "max", auto_adjust=True, interval='5m')
+    dataframe = yf.download(stock_symbol, period = "max", interval='5m', auto_adjust=True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
 
