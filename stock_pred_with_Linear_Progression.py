@@ -16,8 +16,9 @@ readme = st.checkbox("readme first")
 
 if readme:
 
-    st.write("""This project uses realtime stock data which obtained using yfinance dependencies. It can predict the action whether sell or buy with the
-    implementation of Linear Regression model""")
+    st.write("This project uses realtime stock data which obtained using yfinance dependencies. It can predict the action whether sell or buy with the implementation of Linear Regression model")
+    st.write("You may refer the type of stock symbol via this link: ", "<a href='https://www.nasdaq.com/market-activity/stocks/screener'><strong>Nasdaq Market Activity</strong></a>", unsafe_allow_html=True)
+    st.write("In order to try ", "<strong>Sell Strategy</strong>", " and ", "<strong>Update Stock</strong>", ", please download the sample template through checkbox ""Download Sample Template"")
 
     st.write ("For more info, please contact:", "<a href='https://www.linkedin.com/in/mingyilee/'>Lee Ming Yi </a>", unsafe_allow_html=True)
 
