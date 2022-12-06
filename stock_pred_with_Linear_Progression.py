@@ -90,13 +90,14 @@ if sb=='Buy Strategy':
     dataframe = yf.download(stock_symbol, start_date, d, auto_adjust=True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
-    st.write(dataframe.tail())
+#     st.write(dataframe.tail())
 
     dataframe = dataframe[["Close"]] #only require close for prediction
     chart_data=pd.DataFrame(dataframe)
 #     st.subheader(stockName+" ("+stock_symbol+") - "+ start_date.strftime("%Y")+"- "+d.strftime("%Y"))
     st.line_chart(chart_data)
-
+    st.write(dataframe)
+    
     # Define variable
     dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
     dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
