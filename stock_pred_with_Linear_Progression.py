@@ -105,18 +105,18 @@ if sb=='Buy Strategy':
     dataframe["value_next_day"] = dataframe["Close"].shift(-1).fillna(dataframe.iloc[-1]['Close'])    
 #     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
-    
-    st.write(len(y))
-    st.write(len(dataframe))
 
     # Train test split
     split_index = 0.8 # Split data into 80:20
     split_index = split_index * len(dataframe)
     split_index = int(split_index)
+    st.write(split_index)
     X_train = X[:split_index]
     y_train = y[:split_index]
     X_test = X[split_index:]
     y_test = y[split_index:]
+    
+    st.write(X_train, y_train, X_test, y_test)
 
     # Prepare for Linear Regression
     @st.cache()
