@@ -90,7 +90,7 @@ if sb=='Buy Strategy':
     dataframe = yf.download(stock_symbol, start_date, d, auto_adjust=True)
     dataframe = dataframe.dropna()
     st.write("Total Stock Data Downloaded: "+str(len(dataframe)))
-    # st.write(dataframe.tail())
+    st.write(dataframe.tail())
 
     dataframe = dataframe[["Close"]] #only require close for prediction
     chart_data=pd.DataFrame(dataframe)
@@ -146,7 +146,7 @@ if sb=='Buy Strategy':
     stocks["strategy"] = np.where(stocks.predicted_tomorrow_value.shift(1) < stocks.predicted_tomorrow_value, 1, 0)
     stocks["strategy_returns"] = stocks.strategy * stocks["returns"]
     cumulative_product = (stocks["strategy_returns"]+1).cumprod()
-    st.write(test_output.tail())
+    st.write(stock.tail())
 
     view = st.checkbox("View Cumulative Product")
 
