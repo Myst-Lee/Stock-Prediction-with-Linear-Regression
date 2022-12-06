@@ -53,7 +53,7 @@ def user_input_features():
 
 @st.cache()
 def pred_tmr():
-    dataset = yf.download(stock_symbol, "2010-01-01", d, auto_adjust=True)
+    dataset = yf.download(stock_symbol, period = "max", auto_adjust=True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
     dataset["twenty_days_avg"] = dataset["Close"].rolling(window=20).mean()
     dataset = dataset.dropna()
