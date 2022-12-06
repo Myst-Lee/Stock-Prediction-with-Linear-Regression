@@ -146,7 +146,7 @@ if sb=='Buy Strategy':
     stocks["strategy"] = np.where(stocks.predicted_tomorrow_value.shift(1) < stocks.predicted_tomorrow_value, 1, 0)
     stocks["strategy_returns"] = stocks.strategy * stocks["returns"]
     cumulative_product = (stocks["strategy_returns"]+1).cumprod()
-    st.write(stock.tail())
+    st.write(stocks.tail())
 
     view = st.checkbox("View Cumulative Product")
 
