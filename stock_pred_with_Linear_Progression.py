@@ -102,7 +102,8 @@ if sb=='Buy Strategy':
     dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
     dataframe = dataframe.dropna()
     X = dataframe[["five_days_moving_avg", "twenty_days_moving_avg"]]
-    dataframe["value_next_day"] = dataframe["Close"].shift(-1).fillna(dataframe.iloc[-1]['Close'])    
+    dataframe["value_next_day"] = dataframe["Close"].shift(-1).fillna(0) 
+#     dataframe.iloc[-1]['Close']
 #     dataframe = dataframe.dropna()
     y = dataframe["value_next_day"]
 
