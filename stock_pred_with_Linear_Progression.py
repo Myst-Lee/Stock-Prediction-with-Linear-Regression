@@ -11,7 +11,7 @@ import streamlit as st
 # Page title
 st.set_page_config(
     page_title="Stock Prediction with Linear Regression",
-    page_icon="🤖",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded")
 
