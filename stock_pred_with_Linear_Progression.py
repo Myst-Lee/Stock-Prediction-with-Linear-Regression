@@ -61,7 +61,7 @@ def user_input_features():
 
 @st.cache()
 def pred_tmr():
-    dataset = yf.download(stock_symbol, period = "max", prepost = True)
+    dataset = yf.download(stock_symbol, period = "max", auto_adjust=True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
     dataset["twenty_days_avg"] = dataset["Close"].rolling(window=20).mean()
     dataset = dataset.dropna()
@@ -91,7 +91,6 @@ if sb=='Buy Strategy':
     d = sideb.date_input(
         "Select Predicted Date:", value = date.today())
 
-    start_date = "2010-01-01"
     df = user_input_features()
     stockName = get_yahoo_shortname(stock_symbol)
     st.header("Buy Strategy - ("+stock_symbol+") "+stockName)
