@@ -10,13 +10,13 @@ import streamlit as st
 
 # Page title
 st.set_page_config(
-    page_title="Stock Prediction with Linear Regression",
+    page_title="Stock Strategy Planning",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded")
 
 # Show header
-st.title("Stock Prediction with Linear Regression")
+st.title("Stock Strategy Planning")
 
 # Show readme
 readme = st.checkbox("readme first")
