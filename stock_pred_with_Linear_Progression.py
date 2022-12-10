@@ -103,10 +103,10 @@ if sb=='Buy Strategy':
     st.line_chart(chart_data)    
     
     # Define variable
-    dataframe["five_days_moving_avg"] = dataframe["Close"].rolling(window=5).mean()
-    dataframe["twenty_days_moving_avg"] = dataframe["Close"].rolling(window=20).mean()
+    dataframe["five_days_avg"] = dataframe["Close"].rolling(window=5).mean()
+    dataframe["twenty_days_avg"] = dataframe["Close"].rolling(window=20).mean()
     dataframe = dataframe.dropna()
-    X = dataframe[["five_days_moving_avg", "twenty_days_moving_avg"]]
+    X = dataframe[["five_days_avg", "twenty_days_avg"]]
     dataframe["value_next_day"] = dataframe["Close"].shift(-1).fillna(0) 
 #     dataframe.iloc[-1]['Close']
 #     dataframe = dataframe.dropna()
