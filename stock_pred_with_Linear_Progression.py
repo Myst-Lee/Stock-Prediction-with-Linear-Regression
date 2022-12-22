@@ -59,7 +59,7 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def pred_tmr():
     dataset = yf.download(stock_symbol, period = "max", auto_adjust=True, prepost=True)
     dataset["five_days_avg"] = dataset["Close"].rolling(window=5).mean()
